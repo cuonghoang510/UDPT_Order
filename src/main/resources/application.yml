@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: order
+
+order:
+  rest:
+    client:
+      connection-timeout: 5000
+      read-timeout: 5000
+
+user-profile:
+  base-url: http://localhost:8080/user/api
+
+merchant-profile:
+  base-url: http://localhost:8081/merchant/api
+
+fundiin:
+  core:
+    base-url: https://gateway-qa.fundiin.vn
+  client-id: HOIBANTRON
+  signature: at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa
