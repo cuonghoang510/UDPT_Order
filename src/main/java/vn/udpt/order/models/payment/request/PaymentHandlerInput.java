@@ -11,6 +11,7 @@ import vn.udpt.order.models.enums.PaymentMethod;
 @Builder
 @Data
 public class PaymentHandlerInput {
+    private String orderId;
     private String merchantId;
     private String requestId;
     private long amount;

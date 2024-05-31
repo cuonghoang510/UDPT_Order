@@ -1,5 +1,7 @@
 package vn.udpt.order.utils;
 
+import vn.udpt.order.models.momo.request.MomoOrderRequest;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
@@ -7,18 +9,18 @@ import java.security.NoSuchAlgorithmException;
 
 public class SignatureGenerator {
 
-//    public static String momoRequestData(MomoInitPaymentRequest request) {
-//        return Parameter.ACCESS_KEY + "=" + MomoConstant.ACCESS_KEY + "&" +
-//                Parameter.AMOUNT + "=" + request.getAmount() + "&" +
-//                Parameter.EXTRA_DATA + "=" + request.getExtraData() + "&" +
-//                Parameter.IPN_URL + "=" + request.getIpnUrl() + "&" +
-//                Parameter.ORDER_ID + "=" + request.getOrderId() + "&" +
-//                Parameter.ORDER_INFO + "=" + request.getOrderInfo() + "&" +
-//                Parameter.PARTNER_CODE + "=" + MomoConstant.PARTNER_CODE + "&" +
-//                Parameter.REDIRECT_URL + "=" + request.getRedirectUrl() + "&" +
-//                Parameter.REQUEST_ID + "=" + request.getRequestId() + "&" +
-//                Parameter.REQUEST_TYPE + "=" + request.getRequestType();
-//    }
+    public static String momoRequestData(MomoOrderRequest request) {
+        return MomoConstant.ACCESS_KEY + "=" + MomoConstant.ACCESS_KEY + "&" +
+                MomoConstant.AMOUNT + "=" + request.getAmount() + "&" +
+                MomoConstant.EXTRA_DATA + "=" + request.getExtraData() + "&" +
+                MomoConstant.IPN_URL + "=" + request.getIpnUrl() + "&" +
+                MomoConstant.ORDER_ID + "=" + request.getOrderId() + "&" +
+                MomoConstant.ORDER_INFO + "=" + request.getOrderInfo() + "&" +
+                MomoConstant.PARTNER_CODE + "=" + MomoConstant.PARTNER_CODE + "&" +
+                MomoConstant.REDIRECT_URL + "=" + request.getRedirectUrl() + "&" +
+                MomoConstant.REQUEST_ID + "=" + request.getRequestId() + "&" +
+                MomoConstant.REQUEST_TYPE + "=" + request.getRequestType();
+    }
 
     public static String generateHmacSHA256Signature(String secretKey, String data) {
         try {

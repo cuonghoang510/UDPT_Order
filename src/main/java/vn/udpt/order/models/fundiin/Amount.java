@@ -9,5 +9,5 @@ import lombok.Data;
 @Builder
 public class Amount {
     private String currency;
-    private Integer value;
+    private long value;
 }

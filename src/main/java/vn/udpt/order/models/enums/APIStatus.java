@@ -21,7 +21,10 @@ public enum APIStatus {
     MERCHANT_NOT_FOUND("MERCHANT_NOT_FOUND", "Merchant not found"),
 
     // PAYMENT API ERROR
-    PAYMENT_NOT_SUPPORT("PAYMENT_NOT_SUPPORT", "Payment method not support"),;
+    PAYMENT_NOT_SUPPORT("PAYMENT_NOT_SUPPORT", "Payment method not support"),
+
+    // Gateway Error
+    INITIATE_ORDER_FAILED("INITIATE_ORDER_FAILED", "Initiate order failed"),;
 
     private final String status;
     private final String message;

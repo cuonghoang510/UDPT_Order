@@ -21,6 +21,7 @@ public abstract class BasePaymentProcess implements PaymentProcessService {
     @Override
     public PaymentHandlerInput createPaymentHandlerInput(Order order) {
         return PaymentHandlerInput.builder()
+                .orderId(order.getId())
                 .merchantId(order.getMerchantId())
                 .requestId(UUID.randomUUID().toString())
                 .amount(order.getAmount())

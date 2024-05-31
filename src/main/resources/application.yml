@@ -15,7 +15,7 @@ merchant-profile:
   base-url: http://localhost:8081/merchant/api
 
 fundiin:
-  core:
-    base-url: https://gateway-qa.fundiin.vn
+  base-url: https://gateway-qa.fundiin.vn
+  initiate-order-path: /v2/payments
   client-id: HOIBANTRON
   signature: at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa

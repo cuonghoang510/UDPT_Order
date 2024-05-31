@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.udpt.order.models.momo.SubscriptionInfo;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,5 +25,6 @@ public class MomoOrderRequest {
     private String lang;
     private String signature;
     private String storeName;
+    private SubscriptionInfo subscriptionInfo;
     private int storeId;
 }
