@@ -6,19 +6,13 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import vn.udpt.order.models.enums.APIStatus;
-import vn.udpt.order.models.enums.OrderStatus;
 import vn.udpt.order.models.exception.DefaultException;
-import vn.udpt.order.models.request.InitOrderRequest;
 import vn.udpt.order.models.request.OrderInfoRequest;
 import vn.udpt.order.models.response.ListOrderResponse;
 import vn.udpt.order.models.response.OrderInfoResponse;
-import vn.udpt.order.persistences.entites.Event;
 import vn.udpt.order.persistences.entites.Order;
 import vn.udpt.order.persistences.repositories.OrderRepository;
 import vn.udpt.order.services.OrderService;
-
-import java.time.Instant;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +21,6 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ObjectMapper objectMapper;
-
-    private static final long experiodTime = 60 * 60 * 24L;
 
     @Override
     public Order save(Order order) {

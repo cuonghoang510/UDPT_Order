@@ -8,5 +8,6 @@ import java.io.IOException;
 public class RestTemplateExceptionHandler extends DefaultResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
+
     }
 }
