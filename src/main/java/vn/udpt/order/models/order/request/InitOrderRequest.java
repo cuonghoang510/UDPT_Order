@@ -1,4 +1,4 @@
-package vn.udpt.order.models.request;
+package vn.udpt.order.models.order.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

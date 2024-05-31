@@ -1,4 +1,4 @@
-package vn.udpt.order.models.response;
+package vn.udpt.order.models.order.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

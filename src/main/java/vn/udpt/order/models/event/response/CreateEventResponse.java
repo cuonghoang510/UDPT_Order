@@ -1,0 +1,15 @@
+package vn.udpt.order.models.event.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CreateEventResponse {
+    private String id;
+    private String result;
+}

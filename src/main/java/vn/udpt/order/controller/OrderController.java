@@ -7,11 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.udpt.order.models.dto.Response;
 import vn.udpt.order.models.enums.Status;
-import vn.udpt.order.models.request.OrderInfoRequest;
-import vn.udpt.order.models.request.InitOrderRequest;
-import vn.udpt.order.models.response.ListOrderResponse;
-import vn.udpt.order.models.response.OrderInfoResponse;
-import vn.udpt.order.models.response.InitOrderResponse;
+import vn.udpt.order.models.order.request.OrderInfoRequest;
+import vn.udpt.order.models.order.request.InitOrderRequest;
+import vn.udpt.order.models.order.response.ListOrderResponse;
+import vn.udpt.order.models.order.response.OrderInfoResponse;
+import vn.udpt.order.models.order.response.InitOrderResponse;
 import vn.udpt.order.services.InitOrderService;
 import vn.udpt.order.services.OrderService;
 
