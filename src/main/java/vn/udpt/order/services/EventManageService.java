@@ -6,5 +6,5 @@ import vn.udpt.order.models.event.response.GetListEventResponse;
 
 public interface EventManageService {
     CreateEventResponse createEvent(CreateEventRequest createEventRequest);
-    GetListEventResponse getListEvent(String merchantId);
+    GetListEventResponse getListEventByMerchantId(String merchantId);
 }

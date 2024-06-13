@@ -32,15 +32,15 @@ public class EventManageServiceImpl implements EventManageService {
     public CreateEventResponse createEvent(CreateEventRequest createEventRequest) {
 
         MerchantProfileResponse merchantProfileResponse = merchantService.getMerchantProfile(createEventRequest.getMerchantId());
-
-        if (merchantProfileResponse == null) {
-            log.error("Merchant not found in create event flow");
-            throw new DefaultException(APIStatus.MERCHANT_NOT_FOUND);
-        }
+//
+//        if (merchantProfileResponse == null) {
+//            log.error("Merchant not found in create event flow");
+//            throw new DefaultException(APIStatus.MERCHANT_NOT_FOUND);
+//        }
 
         Event event = Event.builder()
                 .id(UUID.randomUUID().toString())
-                .merchantId(merchantProfileResponse.getId())
+                .merchantId(createEventRequest.getMerchantId())
                 .title(createEventRequest.getTitle())
                 .description(createEventRequest.getDescription())
                 .startDate(createEventRequest.getStartDate())
@@ -60,7 +60,7 @@ public class EventManageServiceImpl implements EventManageService {
     }
 
     @Override
-    public GetListEventResponse getListEvent(String merchantId) {
+    public GetListEventResponse getListEventByMerchantId(String merchantId) {
         MerchantProfileResponse merchantProfileResponse = merchantService.getMerchantProfile(merchantId);
 
         if (merchantProfileResponse == null) {

@@ -1,5 +1,6 @@
 package vn.udpt.order.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,13 @@ public class EventController {
 
     private final EventManageService eventManageService;
 
+    @GetMapping("/test")
+    public ResponseEntity<Response<Object>> test() {
+        return ResponseEntity.ok(new Response<>(Status.SUCCESS, Status.SUCCESS.getMessage(), "Hello"));
+    }
+
     @PostMapping("/create")
-    public ResponseEntity<Response<Object>> createEvent(@RequestBody CreateEventRequest request) {
+    public ResponseEntity<Response<Object>> createEvent(@RequestBody @Valid CreateEventRequest request) {
         log.info("Init process create event for request {}", request);
         CreateEventResponse response = eventManageService.createEvent(request);
         log.info("Done process create event for request {} with response {}", request, response);
@@ -30,7 +36,7 @@ public class EventController {
     @GetMapping("/{merchantId}")
     public ResponseEntity<Response<Object>> getListEventByMerchantId(@PathVariable(required = true) String merchantId) {
         log.info("Init process get list event for request {}", merchantId);
-        GetListEventResponse response = eventManageService.getListEvent(merchantId);
+        GetListEventResponse response = eventManageService.getListEventByMerchantId(merchantId);
         log.info("Done process get list event for merchantId {} with response {}", merchantId, response);
         return ResponseEntity.ok(new Response<>(Status.SUCCESS, Status.SUCCESS.getMessage(), response));
     }

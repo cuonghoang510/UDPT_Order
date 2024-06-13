@@ -48,7 +48,7 @@ public class Event {
     @Column(name = "start_date")
     private Instant startDate;
 
-    @Column(name = "end_Date")
+    @Column(name = "end_date")
     private Instant endDate;
 
     @Column(name = "status")

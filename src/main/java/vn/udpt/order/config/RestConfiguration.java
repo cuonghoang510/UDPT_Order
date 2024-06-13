@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestConfiguration {
 
-    @Value("${fundiin.core.base-url}")
+    @Value("${fundiin.base-url}")
     private String fundiinCoreBaseUrl;
 
     @Value("${order.rest.client.connection-timeout}")

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import vn.udpt.order.models.enums.APIStatus;
+import vn.udpt.order.models.enums.Language;
 import vn.udpt.order.models.enums.PaymentMethod;
 import vn.udpt.order.models.exception.DefaultException;
 import vn.udpt.order.models.momo.SubscriptionInfo;
@@ -32,6 +34,12 @@ public class MomoProcessPayment extends BasePaymentProcess{
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
     private final HttpService httpService;
+
+    @Value("${momo.base-url}")
+    private String momoBaseUrl;
+
+    @Value("${momo.initiate-order-path}")
+    private String initOrderPath;
 
     @Override
     protected void validate(PaymentHandlerInput input) {
@@ -64,17 +72,14 @@ public class MomoProcessPayment extends BasePaymentProcess{
 
         HttpEntity<MomoOrderRequest> requestHttpEntity = new HttpEntity<>(request);
 
-        ResponseEntity<Object> responseEntity = restTemplate.exchange("https://test-payment.momo.vn" + "/v2/gateway/api/create", HttpMethod.POST, requestHttpEntity, Object.class, new Object[0]);
+        ResponseEntity<Object> responseEntity = httpService.sendPost(momoBaseUrl + initOrderPath, requestHttpEntity, restTemplate, Object.class,true);
         log.info("Momo order response: {}", responseEntity);
         if(responseEntity.getBody() == null || responseEntity.getStatusCode() != HttpStatus.OK) {
             log.error("Error when calling Fundiin API: {}", responseEntity);
             throw new DefaultException(APIStatus.INITIATE_ORDER_FAILED);
         }
 
-        MomoOrderResponse momoOrderResponse = objectMapper.convertValue(responseEntity.getBody(), MomoOrderResponse.class);
-        log.info("Fundiin order response: {}", momoOrderResponse);
-
-        return momoOrderResponse;
+        return objectMapper.convertValue(responseEntity.getBody(), MomoOrderResponse.class);
     }
 
     private MomoOrderRequest createMomoOrderRequest(PaymentHandlerInput input) {
@@ -92,7 +97,7 @@ public class MomoProcessPayment extends BasePaymentProcess{
                 .extraData("")
                 .requestType("captureWallet")
                 .subscriptionInfo(createSubscriptionInfo())
-                .lang("vi")
+                .lang(Language.vi.name())
                 .build();
     }
 

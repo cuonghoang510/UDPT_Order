@@ -12,10 +12,14 @@ user-profile:
   base-url: http://localhost:8080/user/api
 
 merchant-profile:
-  base-url: http://localhost:8081/merchant/api
+  base-url: http://10.124.7.184:7253/api/merchant-profiles
 
 fundiin:
   base-url: https://gateway-qa.fundiin.vn
   initiate-order-path: /v2/payments
   client-id: HOIBANTRON
   signature: at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa
+
+momo:
+  base-url: https://test-payment.momo.vn
+  initiate-order-path: /v2/gateway/api/cre  ate
