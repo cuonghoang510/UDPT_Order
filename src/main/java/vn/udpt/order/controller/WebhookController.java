@@ -27,6 +27,7 @@ public class WebhookController {
         log.info("Init process webhook for request {}", request);
         UpdateOrderStatusResponse response = webhookService.updateOrderStatus(request);
         log.info("Process webhook successfully for request {} with response:{}", request,response);
+
         return ResponseEntity.ok(new Response<>(response));
     }
 
