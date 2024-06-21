@@ -20,7 +20,6 @@ import vn.udpt.order.models.momo.request.MomoOrderRequest;
 import vn.udpt.order.models.momo.response.MomoOrderResponse;
 import vn.udpt.order.models.payment.request.PaymentHandlerInput;
 import vn.udpt.order.models.payment.response.PaymentHandlerResponse;
-import vn.udpt.order.services.HttpService;
 import vn.udpt.order.utils.MomoConstant;
 import vn.udpt.order.utils.SignatureGenerator;
 
@@ -32,8 +31,7 @@ import java.util.UUID;
 public class MomoProcessPayment extends BasePaymentProcess{
 
     private final ObjectMapper objectMapper;
-    private final RestTemplate restTemplate;
-    private final HttpService httpService;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${momo.base-url}")
     private String momoBaseUrl;
@@ -72,7 +70,7 @@ public class MomoProcessPayment extends BasePaymentProcess{
 
         HttpEntity<MomoOrderRequest> requestHttpEntity = new HttpEntity<>(request);
 
-        ResponseEntity<Object> responseEntity = httpService.sendPost(momoBaseUrl + initOrderPath, requestHttpEntity, restTemplate, Object.class,true);
+        ResponseEntity<Object> responseEntity = restTemplate.exchange(momoBaseUrl + initOrderPath,HttpMethod.POST,requestHttpEntity, Object.class);
         log.info("Momo order response: {}", responseEntity);
         if(responseEntity.getBody() == null || responseEntity.getStatusCode() != HttpStatus.OK) {
             log.error("Error when calling Fundiin API: {}", responseEntity);
@@ -84,7 +82,7 @@ public class MomoProcessPayment extends BasePaymentProcess{
 
     private MomoOrderRequest createMomoOrderRequest(PaymentHandlerInput input) {
         return MomoOrderRequest.builder()
-                .partnerCode(MomoConstant.PARTNER_CODE)
+                .partnerCode("MOMOBKUN20180529")
                 .requestId(UUID.randomUUID().toString())
                 .amount(input.getAmount())
                 .orderId(input.getOrderId())

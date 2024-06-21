@@ -3,10 +3,12 @@ package vn.udpt.order.factory.impl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import vn.udpt.order.models.Item;
 import vn.udpt.order.models.enums.Currency;
 import vn.udpt.order.models.payment.request.PaymentHandlerInput;
 import vn.udpt.order.models.payment.response.PaymentHandlerResponse;
 import vn.udpt.order.models.payment.response.PaymentSubmissionResponse;
+import vn.udpt.order.persistences.entites.Event;
 import vn.udpt.order.persistences.entites.Order;
 
 import java.util.UUID;
@@ -32,6 +34,7 @@ public abstract class BasePaymentProcess implements PaymentProcessService {
                 .email(order.getEmail())
                 .fullName(order.getFullName())
                 .paymentMethod(order.getPaymentMethod())
+                .item(Item.builder().productId(order.getEventId()).quantity(order.getQuantity()).price(order.getPrice()).build())
                 .build();
     }
 

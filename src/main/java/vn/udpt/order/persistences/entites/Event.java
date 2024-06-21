@@ -59,6 +59,9 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventType type;
 
+    @Column(name = "currency")
+    private String currency;
+
     public boolean isOutOfStock() {
         return stock == maxQuantity;
     }

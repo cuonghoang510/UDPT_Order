@@ -19,8 +19,8 @@ public class HttpServiceImpl extends AbstractHttpService{
         return this.objectMapper;
     }
 
-    public HttpServiceImpl(final RestTemplate restTemplate, final ObjectMapper objectMapper) {
-        this.restTemplate = restTemplate;
+    public HttpServiceImpl(final ObjectMapper objectMapper) {
+        this.restTemplate = new RestTemplate();
         this.objectMapper = objectMapper;
     }
 

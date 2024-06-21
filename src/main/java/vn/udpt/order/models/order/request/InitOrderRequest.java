@@ -1,6 +1,8 @@
 package vn.udpt.order.models.order.request;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import vn.udpt.order.models.enums.Currency;
 import vn.udpt.order.models.enums.PaymentMethod;
@@ -9,25 +11,25 @@ import vn.udpt.order.models.enums.PaymentMethod;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InitOrderRequest {
-    @NotBlank
+//    @NotBlank
     private String userId;
 
-    @NotBlank
+//    @NotBlank
     private String email;
 
-    @NotBlank
+//    @NotBlank
     private String eventId;
 
-    @NotBlank
+//    @NotBlank
     private String address;
 
-    @NotBlank
+//    @NotNull
     private PaymentMethod paymentMethod;
 
-    @NotBlank
+//    @Min(1)
     private int quantity;
 
-    @NotBlank
+//    @NotNull
     private Currency currency;
 
     private String promotionId;

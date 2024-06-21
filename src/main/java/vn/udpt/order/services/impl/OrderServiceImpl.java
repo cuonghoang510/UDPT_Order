@@ -49,4 +49,11 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new DefaultException(APIStatus.GET_LIST_ORDER_FAIL)));
     }
 
+    @Override
+    @SneakyThrows
+    public Order getById(String orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new DefaultException(APIStatus.ORDER_NOT_FOUND));
+    }
+
 }

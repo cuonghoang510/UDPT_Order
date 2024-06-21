@@ -5,9 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import vn.udpt.order.models.dto.Response;
 import vn.udpt.order.models.merchantProfile.response.MerchantProfileResponse;
 import vn.udpt.order.services.HttpService;
@@ -21,7 +24,7 @@ import java.util.HashMap;
 public class MerchantServiceImpl implements MerchantService {
 
 
-    private final HttpService httpService;
+    private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper;
 
     @Value("${merchant-profile.base-url}")
@@ -31,7 +34,7 @@ public class MerchantServiceImpl implements MerchantService {
     @SneakyThrows
     public MerchantProfileResponse getMerchantProfile(String merchantId) {
 
-        ResponseEntity<Object> merchantProfileResponse = httpService.get(merchantProfileBaseUrl + "/" + merchantId, new HashMap<>(), new HttpHeaders());
+        ResponseEntity<Object> merchantProfileResponse = restTemplate.exchange(merchantProfileBaseUrl + "/" + merchantId, HttpMethod.GET,new HttpEntity<>(new HttpHeaders()), Object.class);
 
         if(merchantProfileResponse.getStatusCode().is4xxClientError()) {
             log.error("Client error when get merchant profile with merchantId: {}", merchantId);
@@ -43,8 +46,8 @@ public class MerchantServiceImpl implements MerchantService {
             return null;
         }
 
-        Response<MerchantProfileResponse> response = objectMapper.convertValue(merchantProfileResponse.getBody(), Response.class);
+        var response = objectMapper.convertValue(merchantProfileResponse.getBody(), Response.class);
 
-        return response.getData();
+        return objectMapper.convertValue(response.getData(), MerchantProfileResponse.class);
     }
 }

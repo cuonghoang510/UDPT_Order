@@ -2,6 +2,18 @@ spring:
   application:
     name: order
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event_booking_system?currentSchema=udpt_platform
+    username: postgres
+    password: 1
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
 order:
   rest:
     client:
@@ -9,7 +21,7 @@ order:
       read-timeout: 5000
 
 user-profile:
-  base-url: http://localhost:8080/user/api
+  base-url: http://localhost:8081/user-profiles
 
 merchant-profile:
   base-url: http://10.124.7.184:7253/api/merchant-profiles
@@ -22,4 +34,4 @@ fundiin:
 
 momo:
   base-url: https://test-payment.momo.vn
-  initiate-order-path: /v2/gateway/api/cre  ate
+  initiate-order-path: /v2/gateway/api/create

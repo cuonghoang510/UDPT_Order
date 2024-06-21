@@ -31,8 +31,8 @@ public class EventManageServiceImpl implements EventManageService {
     @SneakyThrows
     public CreateEventResponse createEvent(CreateEventRequest createEventRequest) {
 
-        MerchantProfileResponse merchantProfileResponse = merchantService.getMerchantProfile(createEventRequest.getMerchantId());
-//
+//        MerchantProfileResponse merchantProfileResponse = merchantService.getMerchantProfile(createEventRequest.getMerchantId());
+
 //        if (merchantProfileResponse == null) {
 //            log.error("Merchant not found in create event flow");
 //            throw new DefaultException(APIStatus.MERCHANT_NOT_FOUND);
@@ -51,6 +51,7 @@ public class EventManageServiceImpl implements EventManageService {
                 .maxQuantity(createEventRequest.getMaxQuantity())
                 .minQuantity(createEventRequest.getMinQuantity())
                 .price(createEventRequest.getPrice())
+                .currency(createEventRequest.getCurrency() == null ? "VND" : createEventRequest.getCurrency().name())
                 .stock(0)
                 .build();
 
@@ -61,15 +62,20 @@ public class EventManageServiceImpl implements EventManageService {
 
     @Override
     public GetListEventResponse getListEventByMerchantId(String merchantId) {
-        MerchantProfileResponse merchantProfileResponse = merchantService.getMerchantProfile(merchantId);
-
-        if (merchantProfileResponse == null) {
-            log.error("Merchant not found in get list event flow");
-            throw new DefaultException(APIStatus.MERCHANT_NOT_FOUND);
-        }
+//        MerchantProfileResponse merchantProfileResponse = merchantService.getMerchantProfile(merchantId);
+//
+//        if (merchantProfileResponse == null) {
+//            log.error("Merchant not found in get list event flow");
+//            throw new DefaultException(APIStatus.MERCHANT_NOT_FOUND);
+//        }
 
         List<Event> events = eventService.findByMerchantId(merchantId);
 
         return GetListEventResponse.builder().events(events).build();
+    }
+
+    @Override
+    public Event getEventById(String eventId) {
+        return eventService.getById(eventId);
     }
 }

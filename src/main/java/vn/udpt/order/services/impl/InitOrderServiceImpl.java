@@ -45,9 +45,9 @@ public class InitOrderServiceImpl implements InitOrderService {
 
         Event event = validateEvent(eventService.getById(request.getEventId()));
 
-        MerchantProfileResponse merchantProfile = validateMerchantProfile(merchantService.getMerchantProfile(event.getMerchantId()));
+//        MerchantProfileResponse merchantProfile = validateMerchantProfile(merchantService.getMerchantProfile(event.getMerchantId()));
 
-        Order order = orderService.save(submitOrder(request, userProfile, event, merchantProfile));
+        Order order = orderService.save(submitOrder(request, userProfile, event, null));
 
         PaymentProcessService paymentProcessService = paymentProcessFactory.getPaymentProcess(order.getPaymentMethod());
 
@@ -59,7 +59,7 @@ public class InitOrderServiceImpl implements InitOrderService {
     private Order submitOrder(InitOrderRequest request, UserProfileResponse userProfile, Event event, MerchantProfileResponse merchantProfile) {
         Order order = Order.builder()
                 .id(UUID.randomUUID().toString())
-                .merchantId(merchantProfile.getId())
+                .merchantId(event.getMerchantId())
                 .userId(userProfile.getId())
                 .eventId(event.getId())
                 .quantity(request.getQuantity())

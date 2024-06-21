@@ -10,4 +10,5 @@ public interface OrderService {
     OrderInfoResponse getOrderInfo(OrderInfoRequest request);
     ListOrderResponse getOrderByUserId(String userId);
     ListOrderResponse getOrderByMerchantId(String merchantId);
+    Order getById(String orderId);
 }

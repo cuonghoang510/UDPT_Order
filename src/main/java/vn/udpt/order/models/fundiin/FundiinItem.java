@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class FundiinItem {
     private String productId;
     private String productName;
-    private Integer price;
+    private long price;
     private String category;
     private Integer quantity;
     private String currency;

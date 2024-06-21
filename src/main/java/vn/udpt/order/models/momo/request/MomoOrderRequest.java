@@ -22,9 +22,9 @@ public class MomoOrderRequest {
     private String partnerClientId;
     private String extraData;
     private String requestType;
+    private SubscriptionInfo subscriptionInfo;
     private String lang;
     private String signature;
     private String storeName;
-    private SubscriptionInfo subscriptionInfo;
     private int storeId;
 }

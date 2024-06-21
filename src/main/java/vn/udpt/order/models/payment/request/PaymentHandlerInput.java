@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.udpt.order.models.Item;
 import vn.udpt.order.models.enums.PaymentMethod;
 
 @NoArgsConstructor
@@ -22,4 +23,5 @@ public class PaymentHandlerInput {
     private String email;
     private String fullName;
     private PaymentMethod paymentMethod;
+    private Item item;
 }
