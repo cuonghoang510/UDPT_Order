@@ -32,7 +32,7 @@ public class OrderController {
         return ResponseEntity.ok(new Response<>(Status.SUCCESS, Status.SUCCESS.getMessage(), response));
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/get-by-user/{userId}")
     public ResponseEntity<Response<Object>> getOrderByUserId(@PathVariable String userId) {
         log.info("Init process get order by user id {}", userId);
         ListOrderResponse response = orderService.getOrderByUserId(userId);

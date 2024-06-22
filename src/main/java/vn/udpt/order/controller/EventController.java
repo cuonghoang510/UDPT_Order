@@ -12,6 +12,9 @@ import vn.udpt.order.models.event.response.CreateEventResponse;
 import vn.udpt.order.models.event.response.GetListEventResponse;
 import vn.udpt.order.persistences.entites.Event;
 import vn.udpt.order.services.EventManageService;
+import vn.udpt.order.services.EventService;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -20,6 +23,7 @@ import vn.udpt.order.services.EventManageService;
 public class EventController {
 
     private final EventManageService eventManageService;
+    private final EventService eventService;
 
     @GetMapping("/test")
     public ResponseEntity<Response<Object>> test() {
@@ -39,6 +43,14 @@ public class EventController {
         log.info("Init process get list event for request {}", merchantId);
         GetListEventResponse response = eventManageService.getListEventByMerchantId(merchantId);
         log.info("Done process get list event for merchantId {} with response {}", merchantId, response);
+        return ResponseEntity.ok(new Response<>(Status.SUCCESS, Status.SUCCESS.getMessage(), response));
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<Response<Object>> getAllEvent() {
+        log.info("Init process get all event");
+        List<Event> response = eventService.getAll();
+        log.info("Done process get all event with response {}", response);
         return ResponseEntity.ok(new Response<>(Status.SUCCESS, Status.SUCCESS.getMessage(), response));
     }
 

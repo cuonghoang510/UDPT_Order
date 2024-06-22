@@ -9,4 +9,5 @@ public interface EventService {
     void save(Event event);
     Event getById(String id);
     List<Event> findByMerchantId(String merchantId);
+    List<Event> getAll();
 }

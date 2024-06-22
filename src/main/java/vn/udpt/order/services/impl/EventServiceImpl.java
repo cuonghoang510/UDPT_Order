@@ -33,4 +33,9 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findByMerchantId(merchantId).orElseThrow( () -> new DefaultException(APIStatus.EVENT_NOT_FOUND));
     }
 
+    @Override
+    public List<Event> getAll() {
+        return eventRepository.findAll();
+    }
+
 }
