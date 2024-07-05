@@ -24,7 +24,8 @@ public enum APIStatus {
     PAYMENT_NOT_SUPPORT("PAYMENT_NOT_SUPPORT", "Payment method not support"),
 
     // Gateway Error
-    INITIATE_ORDER_FAILED("INITIATE_ORDER_FAILED", "Initiate order failed"),;
+    INITIATE_ORDER_FAILED("INITIATE_ORDER_FAILED", "Initiate order failed"),
+    CANCEL_FAIL("CANCEL_FAIL", "Cancel order failed"),;
 
     private final String status;
     private final String message;

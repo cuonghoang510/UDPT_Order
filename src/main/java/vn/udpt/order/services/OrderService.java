@@ -7,7 +7,7 @@ import vn.udpt.order.persistences.entites.Order;
 
 public interface OrderService {
     Order save(Order order);
-    OrderInfoResponse getOrderInfo(OrderInfoRequest request);
+    OrderInfoResponse getOrderInfo(String orderId);
     ListOrderResponse getOrderByUserId(String userId);
     ListOrderResponse getOrderByMerchantId(String merchantId);
     Order getById(String orderId);

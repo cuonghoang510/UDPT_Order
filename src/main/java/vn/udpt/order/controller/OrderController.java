@@ -7,11 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.udpt.order.models.dto.Response;
 import vn.udpt.order.models.enums.Status;
+import vn.udpt.order.models.order.request.CancelOrderRequest;
 import vn.udpt.order.models.order.request.OrderInfoRequest;
 import vn.udpt.order.models.order.request.InitOrderRequest;
+import vn.udpt.order.models.order.response.CancelOrderResponse;
 import vn.udpt.order.models.order.response.ListOrderResponse;
 import vn.udpt.order.models.order.response.OrderInfoResponse;
 import vn.udpt.order.models.order.response.InitOrderResponse;
+import vn.udpt.order.services.CancelOrderService;
 import vn.udpt.order.services.InitOrderService;
 import vn.udpt.order.services.OrderService;
 
@@ -19,16 +22,26 @@ import vn.udpt.order.services.OrderService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/order/api")
+@CrossOrigin(origins = "http://localhost:8000", allowedHeaders = "*")
 public class OrderController {
 
     private final InitOrderService initOrderService;
     private final OrderService orderService;
+    private final CancelOrderService cancelOrderService;
 
-    @PostMapping("/get-detail")
-    public ResponseEntity<Response<Object>> getOrderDetail(@RequestBody OrderInfoRequest request) {
-        log.info("Init process get order status for request {}", request);
-        OrderInfoResponse response = orderService.getOrderInfo(request);
-        log.info("Done process get order status for request {} with response {}", request, response);
+    @GetMapping("/get-detail/{orderId}")
+    public ResponseEntity<Response<Object>> getOrderDetail(@PathVariable String orderId) {
+        log.info("Init process get order status for request {}", orderId);
+        OrderInfoResponse response = orderService.getOrderInfo(orderId);
+        log.info("Done process get order status for request {} with response {}", orderId, response);
+        return ResponseEntity.ok(new Response<>(Status.SUCCESS, Status.SUCCESS.getMessage(), response));
+    }
+
+    @PostMapping("/cancel-order")
+    public ResponseEntity<Response<Object>> cancelOrder(@RequestBody CancelOrderRequest cancelOrderRequest) {
+        log.info("Init process cancel order for request {}", cancelOrderRequest);
+        CancelOrderResponse response = cancelOrderService.cancelOrder(cancelOrderRequest);
+        log.info("Done process cancel order for request {} with response {}", cancelOrderRequest, response);
         return ResponseEntity.ok(new Response<>(Status.SUCCESS, Status.SUCCESS.getMessage(), response));
     }
 

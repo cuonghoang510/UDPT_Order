@@ -21,7 +21,11 @@ public class OrderInfoResponse {
     private String userId;
     private String phoneNumber;
     private String address;
+    private String eventName;
+    private String eventAddress;
     private PaymentMethod paymentMethod;
+    private int quantity;
+    private int price;
     private int amount;
     private Currency currency;
     private OrderStatus status;

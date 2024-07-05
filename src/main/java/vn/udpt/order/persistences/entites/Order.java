@@ -31,6 +31,12 @@ public class Order {
     @Column(name = "event_id")
     private String eventId;
 
+    @Column(name = "event_name")
+    private String eventName;
+
+    @Column(name = "event_address")
+    private String eventAddress;
+
     @Column(name = "full_name")
     private String fullName;
 

@@ -7,6 +7,7 @@ import vn.udpt.order.models.order.request.UpdateOrderStatusRequest;
 import vn.udpt.order.models.order.response.UpdateOrderStatusResponse;
 import vn.udpt.order.persistences.entites.Event;
 import vn.udpt.order.persistences.entites.Order;
+import vn.udpt.order.services.EmailService;
 import vn.udpt.order.services.EventService;
 import vn.udpt.order.services.OrderService;
 import vn.udpt.order.services.WebhookService;
@@ -18,6 +19,7 @@ public class WebhookServiceImpl implements WebhookService {
 
     private final OrderService orderService;
     private final EventService eventService;
+    private final EmailService emailService;
 
     @Override
     public UpdateOrderStatusResponse updateOrderStatus(UpdateOrderStatusRequest request) {
@@ -32,6 +34,8 @@ public class WebhookServiceImpl implements WebhookService {
         eventService.save(event);
 
         orderService.save(order);
+
+        emailService.sendEmail(order);
 
         return UpdateOrderStatusResponse.builder()
                 .orderId(order.getId())

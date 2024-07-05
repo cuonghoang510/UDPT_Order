@@ -30,8 +30,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @SneakyThrows
-    public OrderInfoResponse getOrderInfo(OrderInfoRequest request) {
-        Order order = orderRepository.findById(request.getOrderId())
+    public OrderInfoResponse getOrderInfo(String orderId) {
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new DefaultException(APIStatus.ORDER_NOT_FOUND));
         return objectMapper.convertValue(order, OrderInfoResponse.class);
     }

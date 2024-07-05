@@ -62,6 +62,8 @@ public class InitOrderServiceImpl implements InitOrderService {
                 .merchantId(event.getMerchantId())
                 .userId(userProfile.getId())
                 .eventId(event.getId())
+                .eventName(event.getTitle())
+                .eventAddress(event.getLocation())
                 .quantity(request.getQuantity())
                 .amount(event.getPrice() * request.getQuantity())
                 .paymentMethod(request.getPaymentMethod())
