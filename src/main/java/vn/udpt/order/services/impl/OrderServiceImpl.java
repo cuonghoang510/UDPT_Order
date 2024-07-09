@@ -57,10 +57,10 @@ public class OrderServiceImpl implements OrderService {
     @SneakyThrows
     public Order getById(String orderId) {
 
-        Object orderFromRedis = redisService.getObject(orderId);
+        Order orderFromRedis = redisService.getObject(orderId,Order.class);
 
         if (orderFromRedis != null) {
-            return objectMapper.readValue(orderFromRedis.toString(), Order.class);
+            return orderFromRedis;
         }
 
         return orderRepository.findById(orderId)
