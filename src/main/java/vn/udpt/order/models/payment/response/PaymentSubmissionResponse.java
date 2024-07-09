@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentSubmissionResponse {
     private String paymentUrl;
-    private String qrDate;
+    private String qrData;
 }

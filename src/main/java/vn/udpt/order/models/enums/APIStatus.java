@@ -25,7 +25,8 @@ public enum APIStatus {
 
     // Gateway Error
     INITIATE_ORDER_FAILED("INITIATE_ORDER_FAILED", "Initiate order failed"),
-    CANCEL_FAIL("CANCEL_FAIL", "Cancel order failed"),;
+    CANCEL_FAIL("CANCEL_FAIL", "Cancel order failed"),
+    ROUTE_NOT_FOUND("ROUTE_NOT_FOUND", "route not found");
 
     private final String status;
     private final String message;

@@ -14,6 +14,7 @@ import vn.udpt.order.persistences.entites.Order;
 import vn.udpt.order.persistences.repositories.OrderRepository;
 import vn.udpt.order.services.InitOrderService;
 import vn.udpt.order.services.OrderService;
+import vn.udpt.order.services.RedisService;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +23,12 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ObjectMapper objectMapper;
+    private final RedisService redisService;
 
+    @SneakyThrows
     @Override
     public Order save(Order order) {
+        redisService.addObject(order.getId(), objectMapper.writeValueAsString(order), 60L);
         return orderRepository.save(order);
     }
 
@@ -52,6 +56,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @SneakyThrows
     public Order getById(String orderId) {
+
+        Object orderFromRedis = redisService.getObject(orderId);
+
+        if (orderFromRedis != null) {
+            return objectMapper.readValue(orderFromRedis.toString(), Order.class);
+        }
+
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new DefaultException(APIStatus.ORDER_NOT_FOUND));
     }

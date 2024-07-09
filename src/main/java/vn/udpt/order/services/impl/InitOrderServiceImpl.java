@@ -7,20 +7,31 @@ import org.springframework.stereotype.Service;
 import vn.udpt.order.factory.PaymentProcessFactory;
 import vn.udpt.order.factory.impl.PaymentProcessService;
 import vn.udpt.order.models.Item;
+import vn.udpt.order.models.dto.Payment;
 import vn.udpt.order.models.enums.APIStatus;
 import vn.udpt.order.models.enums.OrderStatus;
+import vn.udpt.order.models.enums.PaymentMethod;
 import vn.udpt.order.models.exception.DefaultException;
 import vn.udpt.order.models.merchantProfile.response.MerchantProfileResponse;
+import vn.udpt.order.models.order.request.GetPaymentUrlRequest;
+import vn.udpt.order.models.order.request.InitOrderV2Request;
+import vn.udpt.order.models.order.response.FetchPaymentMethodResponse;
+import vn.udpt.order.models.order.response.InitOrderV2Response;
 import vn.udpt.order.models.payment.response.PaymentSubmissionResponse;
 import vn.udpt.order.models.order.request.InitOrderRequest;
 import vn.udpt.order.models.order.response.InitOrderResponse;
 import vn.udpt.order.models.userProfile.response.UserProfileResponse;
 import vn.udpt.order.persistences.entites.Event;
 import vn.udpt.order.persistences.entites.Order;
+import vn.udpt.order.persistences.entites.OrderPaymentInfo;
+import vn.udpt.order.persistences.entites.Route;
+import vn.udpt.order.persistences.repositories.OrderPaymentInfoRepository;
+import vn.udpt.order.persistences.repositories.RouteRepository;
 import vn.udpt.order.services.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -34,6 +45,10 @@ public class InitOrderServiceImpl implements InitOrderService {
     private final MerchantService merchantService;
     private final EventService eventService;
     private final PaymentProcessFactory paymentProcessFactory;
+
+
+    private final RouteRepository routeRepository;
+    private final OrderPaymentInfoRepository orderPaymentInfoRepository;
 
     private static final long experiodTime = 60 * 60L;
 
@@ -54,6 +69,76 @@ public class InitOrderServiceImpl implements InitOrderService {
         PaymentSubmissionResponse paymentSubmissionResponse = paymentProcessService.processPayment(paymentProcessService.createPaymentHandlerInput(order));
 
         return createInitOrderResponse(order, event, paymentSubmissionResponse);
+    }
+
+    @Override
+    @SneakyThrows
+    public InitOrderV2Response initOrderV2(InitOrderV2Request request) {
+
+        Route route = routeRepository.findById(request.getRouteId()).orElseThrow(() -> new DefaultException(APIStatus.ROUTE_NOT_FOUND));
+
+        Order order = orderService.save(submitOrderV2(request, route));
+
+        return InitOrderV2Response.builder()
+                .orderId(order.getId())
+                .message("success")
+                .build();
+    }
+
+    @Override
+    public FetchPaymentMethodResponse fetchPaymentMethod(String orderId) {
+        Order order = orderService.getById(orderId);
+
+        Route route = routeRepository.findById(order.getRouteId()).orElseThrow(() -> new DefaultException(APIStatus.ROUTE_NOT_FOUND));
+
+        PaymentProcessService paymentProcessServiceForFundiin = paymentProcessFactory.getPaymentProcess(PaymentMethod.FUNDIIN);
+        PaymentSubmissionResponse paymentSubmissionResponseForFundiin = paymentProcessServiceForFundiin.processPayment(paymentProcessServiceForFundiin.createPaymentHandlerInput(order));
+        OrderPaymentInfo fundiinOrderPaymentInfo = OrderPaymentInfo.builder().id(UUID.randomUUID().toString()).orderId(orderId).paymentMethod(PaymentMethod.FUNDIIN).qrData(paymentSubmissionResponseForFundiin.getQrData()).paymentUrl(paymentSubmissionResponseForFundiin.getPaymentUrl()).build();
+        orderPaymentInfoRepository.save(fundiinOrderPaymentInfo);
+
+        PaymentProcessService paymentProcessServiceForMomo = paymentProcessFactory.getPaymentProcess(PaymentMethod.MOMO);
+        PaymentSubmissionResponse paymentSubmissionResponseForMomo = paymentProcessServiceForMomo.processPayment(paymentProcessServiceForMomo.createPaymentHandlerInput(order));
+        OrderPaymentInfo momoOrderPaymentInfo = OrderPaymentInfo.builder().id(UUID.randomUUID().toString()).orderId(orderId).paymentMethod(PaymentMethod.MOMO).qrData(paymentSubmissionResponseForMomo.getQrData()).paymentUrl(paymentSubmissionResponseForMomo.getPaymentUrl()).build();
+        orderPaymentInfoRepository.save(momoOrderPaymentInfo);
+
+        return FetchPaymentMethodResponse.builder()
+                .orderId(order.getId())
+                .fullName(order.getFullName())
+                .phoneNumber(order.getPhoneNumber())
+                .email(order.getEmail())
+                .routeName(route.getName())
+                .startLocation(route.getStartLocation())
+                .destinationLocation(route.getEndLocation())
+                .totalAmount(order.getAmount())
+                .status(order.getStatus().name())
+                .payments(List.of(Payment.builder().paymentMethodId(momoOrderPaymentInfo.getId()).orderId(order.getId()).paymentMethodName(PaymentMethod.MOMO.name()).build()
+                        ,Payment.builder().paymentMethodId(fundiinOrderPaymentInfo.getId()).orderId(order.getId()).paymentMethodName(PaymentMethod.FUNDIIN.name()).build()))
+                .build();
+    }
+
+    @Override
+    public String getPaymentUrl(GetPaymentUrlRequest request) {
+        Optional<OrderPaymentInfo> orderPaymentOptional = orderPaymentInfoRepository.findByOrderIdAndPaymentMethod(request.getOrderId(), request.getPaymentMethod());
+        if(orderPaymentOptional.isEmpty()) {
+            log.error("Order payment info not found with orderId:{} and paymentMethod:{}", request.getOrderId(), request.getPaymentMethod());
+            throw new DefaultException(APIStatus.ORDER_NOT_FOUND);
+        }
+        return orderPaymentOptional.get().getQrData();
+    }
+
+    private Order submitOrderV2(InitOrderV2Request request, Route route) {
+        return Order.builder()
+                .id(UUID.randomUUID().toString())
+                .email(request.getEmail())
+                .fullName(request.getFullName())
+                .phoneNumber(request.getPhoneNumber())
+                .status(OrderStatus.CREATED)
+                .amount(route.getPrice())
+                .quantity(request.getQuantity())
+                .startLocation(route.getStartLocation())
+                .endLocation(route.getEndLocation())
+                .routeId(route.getId())
+                .build();
     }
 
     private Order submitOrder(InitOrderRequest request, UserProfileResponse userProfile, Event event, MerchantProfileResponse merchantProfile) {

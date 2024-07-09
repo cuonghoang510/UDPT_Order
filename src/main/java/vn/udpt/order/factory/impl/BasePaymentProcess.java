@@ -34,7 +34,7 @@ public abstract class BasePaymentProcess implements PaymentProcessService {
                 .email(order.getEmail())
                 .fullName(order.getFullName())
                 .paymentMethod(order.getPaymentMethod())
-                .item(Item.builder().productId(order.getEventId()).quantity(order.getQuantity()).price(order.getPrice()).build())
+                .item(Item.builder().productId(order.getRouteId()).quantity(order.getQuantity()).price(order.getPrice()).build())
                 .build();
     }
 

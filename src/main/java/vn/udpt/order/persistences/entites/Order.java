@@ -81,4 +81,13 @@ public class Order {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "route_id")
+    private String routeId;
+
+    @Column(name = "start_location")
+    private String startLocation;
+
+    @Column(name = "end_location")
+    private String endLocation;
+
 }

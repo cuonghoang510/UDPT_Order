@@ -1,4 +1,5 @@
 spring:
+
   application:
     name: order
 
@@ -13,6 +14,13 @@ spring:
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  data:
+    mongodb:
+      authentication-database: admin
+      host: localhost
+      port: 27017
+      database: QTSCDLHD
 
 order:
   rest:

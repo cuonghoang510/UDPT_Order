@@ -27,6 +27,7 @@ import vn.udpt.order.utils.FundiinConstant;
 import vn.udpt.order.utils.HeaderUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -86,12 +87,12 @@ public class FundiinProcessPayment extends BasePaymentProcess {
     private FundiinOrderRequest createFundiinOrderRequest(PaymentHandlerInput input) {
         return FundiinOrderRequest.builder()
                 .merchantId(FundiinConstant.MERCHANTID)
-                .referenceId(input.getOrderId())
+                .referenceId(UUID.randomUUID().toString())
                 .requestType(FundiinConstant.REQUESTTYPE)
                 .paymentMethod(FundiinConstant.PAYMENTMETHOD)
                 .description("Test order")
                 .amount(Amount.builder().value(input.getAmount()).currency(Currency.VND.name()).build())
-                .customer(UserInfo.builder().email(input.getEmail()).phoneNumber(input.getPhoneNumber()).firstName(input.getFullName()).lastName(input.getFullName()).build())
+                .customer(UserInfo.builder().email(input.getEmail()).phoneNumber(input.getPhoneNumber()).firstName("Hoang").lastName("Cuong").build())
                 .shipping(Shipping.builder().city("Ho Chi Minh").country("VN").ward("8").district("5").street("Tran Nhan Ton").houseNumber("123").build()) // TODO: Update here
                 .successRedirectUrl(FundiinConstant.SUCCESSREDIRECTURL)
                 .unSuccessRedirectUrl(FundiinConstant.UNSUCCESSREDIRECTURL)
